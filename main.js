@@ -30,14 +30,12 @@ const glados = async () => {
     const status = await statusResponse.json()
     console.log('Status response:', JSON.stringify(status, null, 2))
 
-    // Flexible parsing of leftDays
+    // Parse leftDays from the response
     let leftDays = 'Unknown'
-    if (status.data && status.data.leftDays) {
-      leftDays = Number(status.data.leftDays)
-    } else if (status.leftDays) {
-      leftDays = Number(status.leftDays)
+    if (status.code === 0 && status.data && status.data.leftDays) {
+      leftDays = parseFloat(status.data.leftDays).toFixed(2)  // Convert to number and fix to 2 decimal places
     } else {
-      console.warn('Could not find leftDays in the response')
+      console.warn('Could not find leftDays in the response or unexpected response format')
     }
 
     return [
